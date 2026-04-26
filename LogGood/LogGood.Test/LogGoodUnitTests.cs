@@ -50,7 +50,7 @@ class Program
         _logger.[|LogInformation|](""Missing EventId!""); // Should trigger diagnostic
     }
 }";
-            var test = new CSharpAnalyzerTest<LogGoodAnalyzer, DefaultVerifier>
+            CSharpAnalyzerTest<LogGoodAnalyzer, DefaultVerifier> test = new CSharpAnalyzerTest<LogGoodAnalyzer, DefaultVerifier>
             {
                 MarkupOptions = MarkupOptions.UseFirstDescriptor,
                 TestCode = testCode,
@@ -92,6 +92,42 @@ class Program
             }.RunAsync();
         }
 
+
+        [Fact]
+        public async Task LoggingDelegateCheckMissingEventId()
+        {
+            var testCode = @"using Microsoft.Extensions.Logging;
+
+public partial class LoggerSearch
+{
+    readonly ILogger<LoggerSearch> _logger;
+
+    public LoggerSearch(ILogger<LoggerSearch> logger)
+    {
+        _logger = logger;
+    }
+
+    [LoggerMessage(EventId = 1001, Level = LogLevel.Information, Message = ""Log has Event ID"")]
+    public static partial void LogProcessingStart(ILogger logger);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = ""Missing EventId but itemId={ItemId}"")]
+    public static partial void {|GLG003:LogMissingEvent|}(ILogger logger, int itemId);
+
+    public void Scan(string[] args)
+    {
+        LogProcessingStart(_logger);
+        LogMissingEvent(_logger, 446);
+    }
+
+    public static partial void LogProcessingStart(global::Microsoft.Extensions.Logging.ILogger logger) { }
+    public static partial void {|GLG003:LogMissingEvent|}(global::Microsoft.Extensions.Logging.ILogger logger, global::System.Int32 itemId) { }
+}";
+
+            await new CSharpAnalyzerTest<LogGoodAnalyzer, DefaultVerifier>
+            {
+                TestCode = testCode,
+                ReferenceAssemblies = ReferenceAssemblies.Net.Net80.AddPackages(ImmutableArray.Create(new PackageIdentity("Microsoft.Extensions.Logging.Abstractions", "8.0.0"))),
+            }.RunAsync();
+        }
     }
 }
-

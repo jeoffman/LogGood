@@ -5,11 +5,13 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Jeoffman.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>LogGood</PackageId>
-    <PackageVersion>1.0.0.0</PackageVersion>
+    <PackageVersion>0.9.0.0</PackageVersion>
     <Authors>jeoffman</Authors>
     <PackageLicenseUrl>https://opensource.org/license/MIT</PackageLicenseUrl>
     <PackageProjectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</PackageProjectUrl>
@@ -17,7 +19,7 @@
     <RepositoryUrl>https://github.com/jeoffman/LogGood</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>LogGood</Description>
-    <PackageReleaseNotes>Summary of changes made in this release of the package.</PackageReleaseNotes>
+    <PackageReleaseNotes>I'm not there yet, sorry</PackageReleaseNotes>
     <Copyright>Copyright 2025</Copyright>
     <PackageTags>LogGood, analyzers</PackageTags>
     <DevelopmentDependency>true</DevelopmentDependency>

@@ -11,8 +11,11 @@ using System.Threading.Tasks;
 
 namespace TestApp
 {
-    class LoggerSearch
+    public partial class LoggerSearch
     {
+        const int EventIdBase = 100;
+        const int EventIdBase2 = EventIdBase + 20;
+
         readonly ILogger<LoggerSearch> _logger;
 
         public LoggerSearch(ILogger<LoggerSearch> logger)
@@ -20,15 +23,28 @@ namespace TestApp
             _logger = logger;
         }
 
+        [LoggerMessage(EventId = 1001, Level = LogLevel.Information, Message = "Log with event id but missing parameter for 'itemId' in message")]
+        public static partial void LogProcessingStart(ILogger logger, int itemId);  // TEST: parameter "itemId" isn't used, I know, on purpose
+
+        [LoggerMessage(Level = LogLevel.Information, Message = "Logging message is missing Event Id in attribute itemId={ItemId}")]
+        public static partial void LogProcessingMissing(ILogger logger, int itemId);
+
+        public void TestMyLogAnalyzer()
+        {
+            LogProcessingStart(_logger, 445);
+            LogProcessingMissing(_logger, 445);
+            _logger.LogInformation(123, "Has duplicate");   // the "first" 123, everyone else is a dupe!
+            _logger.LogError(123, "Has duplicate");                     // TEST: this is a dupe
+            _logger.LogInformation(125, "No duplicate");
+            _logger.LogInformation("Missing EventId");                  // TEST: this has no EventId
+            _logger.LogInformation(126, "Scanning for .sln files in: {RootPath}", "whatever");
+            _logger.LogDebug(EventIdBase + 23, "duplicate with some math invovled");    // TEST: this is another dupe, but with math
+            _logger.LogWarning(EventIdBase2 + 3, "duplicate with more math invovled");  // TEST: this is another dupe, but with different math
+        }
+
         public async Task Scan(string[] args)
         {
             string rootPath = args.Length > 0 ? args[0] : Directory.GetCurrentDirectory();
-
-            _logger.LogInformation(123, "Has duplicate");
-            _logger.LogError(123, "Has duplicate");
-            _logger.LogInformation(125, "No duplicate");
-            _logger.LogInformation("Missing EventId");
-            _logger.LogInformation(126, "Scanning for .sln files in: {RootPath}", rootPath);
 
             var solutionFiles = Directory.EnumerateFiles(rootPath, "*.sln", SearchOption.TopDirectoryOnly)
             .Concat(Directory.EnumerateDirectories(rootPath)
@@ -97,10 +113,10 @@ namespace TestApp
 
                 if (eventIdMap.Count > 0)
                 {
-                    _logger.LogInformation($"    Duplicate EventIds = {eventIdMap.Count}");
+                    _logger.LogInformation(123, "    Duplicate EventIds = {Counts}", eventIdMap.Count);
                     foreach (KeyValuePair<int, List<Location>> kvp in eventIdMap.Where(kvp => kvp.Value.Count > 1))
                     {
-                        _logger.LogInformation($"    EventId {kvp.Key} used at:");
+                        _logger.LogInformation(128, "    EventId {Key} used at:", kvp.Key);
                         foreach (Location? loc in kvp.Value)
                             _logger.LogInformation($"    {loc.GetLineSpan()}");
                     }

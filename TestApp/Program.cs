@@ -8,7 +8,7 @@ namespace TestApp
     {
         static async Task Main(string[] args)
         {
-            var services = new ServiceCollection();
+            ServiceCollection services = new ServiceCollection();
 
             services.AddLogging(config => config.AddConsole());
 

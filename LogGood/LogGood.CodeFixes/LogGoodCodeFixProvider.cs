@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
 using System.Threading;
@@ -11,7 +9,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Rename;
-using Microsoft.CodeAnalysis.Text;
 
 namespace LogGood
 {
@@ -20,7 +17,7 @@ namespace LogGood
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(LogGoodAnalyzer.Rule1.Id, LogGoodAnalyzer.Rule2.Id); }
+            get { return ImmutableArray.Create(LogGoodAnalyzer.Rule1.Id, LogGoodAnalyzer.Rule2.Id, LogGoodAnalyzer.Rule3.Id); }
         }
 
         public sealed override FixAllProvider GetFixAllProvider()
