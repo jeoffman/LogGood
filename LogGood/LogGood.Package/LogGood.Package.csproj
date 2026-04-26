@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -11,24 +11,29 @@
 
   <PropertyGroup>
     <PackageId>LogGood</PackageId>
-    <PackageVersion>0.9.0.0</PackageVersion>
+    <PackageVersion>0.9.0.2</PackageVersion>
     <Authors>jeoffman</Authors>
-    <PackageLicenseUrl>https://opensource.org/license/MIT</PackageLicenseUrl>
-    <PackageProjectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</PackageProjectUrl>
-    <PackageIconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/jeoffman/LogGood</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/jeoffman/LogGood/blob/main/LogGood%20200x200.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/jeoffman/LogGood</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>LogGood</Description>
     <PackageReleaseNotes>I'm not there yet, sorry</PackageReleaseNotes>
-    <Copyright>Copyright 2025</Copyright>
+    <Copyright>Copyright 2025-2026</Copyright>
     <PackageTags>LogGood, analyzers</PackageTags>
     <DevelopmentDependency>true</DevelopmentDependency>
     <NoPackageAnalysis>true</NoPackageAnalysis>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>LogGood.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
 
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath=""/>
+    <None Include="..\..\LogGood.png" Pack="true" PackagePath="\"/>
+    <None Include="..\..\readme.md" Pack="true" PackagePath="\"/>
     <ProjectReference Include="..\LogGood.CodeFixes\LogGood.CodeFixes.csproj" />
     <ProjectReference Include="..\LogGood\LogGood.csproj" />
   </ItemGroup>
